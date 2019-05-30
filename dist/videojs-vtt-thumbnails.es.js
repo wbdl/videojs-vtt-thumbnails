@@ -353,6 +353,19 @@ var vttThumbnailsPlugin = function () {
     return mouseX - (rect.left + (window.pageXOffset || docEl.scrollLeft || 0));
   };
 
+  vttThumbnailsPlugin.prototype.hmsToSecondsOnly = function hmsToSecondsOnly(str) {
+    var p = str.split(':'),
+        s = 0,
+        m = 1;
+
+    while (p.length > 0) {
+      s += m * parseInt(p.pop(), 10);
+      m *= 60;
+    }
+
+    return s;
+  };
+
   vttThumbnailsPlugin.prototype.onBarMousemove = function onBarMousemove(event) {
     this.updateThumbnailStyle(this.getXCoord(this.progressBar, event.clientX), this.progressBar.offsetWidth);
   };
@@ -375,8 +388,7 @@ var vttThumbnailsPlugin = function () {
   };
 
   vttThumbnailsPlugin.prototype.updateThumbnailStyle = function updateThumbnailStyle(x, width) {
-    var duration = this.player.duration();
-    var time = (1 - (width - x) / width) * duration;
+    var time = this.hmsToSecondsOnly(this.player.controlBar.progressControl.seekBar.mouseTimeDisplay.el_.innerText);
     var currentStyle = this.getStyleForTime(time);
 
     if (!currentStyle) {

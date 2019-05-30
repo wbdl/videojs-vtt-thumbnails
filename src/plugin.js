@@ -210,6 +210,18 @@ class vttThumbnailsPlugin {
     return mouseX - ( rect.left + (window.pageXOffset || docEl.scrollLeft || 0));
   }
 
+  hmsToSecondsOnly(str) {
+    let p = str.split(':'),
+      s = 0, m = 1;
+
+    while (p.length > 0) {
+      s += m * parseInt(p.pop(), 10);
+      m *= 60;
+    }
+
+    return s;
+  }
+
   onBarMousemove (event) {
     this.updateThumbnailStyle(
       this.getXCoord(this.progressBar, event.clientX),
@@ -235,8 +247,7 @@ class vttThumbnailsPlugin {
   }
 
   updateThumbnailStyle (x, width) {
-    const duration = this.player.duration()
-    const time = ((1 - ((width - x) / width))) * duration
+    const time = this.hmsToSecondsOnly(this.player.controlBar.progressControl.seekBar.mouseTimeDisplay.el_.innerText);
     const currentStyle = this.getStyleForTime(time)
 
     if (!currentStyle) {
