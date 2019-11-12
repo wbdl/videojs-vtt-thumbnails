@@ -172,13 +172,7 @@ class vttThumbnailsPlugin {
     this.time = document.createElement('div')
     this.time.className = 'vjs-thumbnail-time'
     thumbHolder.appendChild(this.time)
-    this.time.innerHTML = this.player.currentTime();
-    const arrow = document.createElement('div');
-    arrow.className = 'vjs-thumbnail-arrow';
-    if (this.options.width) {
-      arrow.setAttribute('style', 'margin-left: ' + ((this.options.width / 2) - 5) + 'px')
-    }
-    thumbHolder.appendChild(arrow)
+    this.time.innerHTML = this.player.currentTime()
     this.progressBar.appendChild(thumbHolder)
     this.thumbnailHolder = thumbHolder
     if(mouseDisplay) {
@@ -248,20 +242,47 @@ class vttThumbnailsPlugin {
 
   updateThumbnailStyle (x, width) {
     const time = this.hmsToSecondsOnly(this.player.controlBar.progressControl.seekBar.mouseTimeDisplay.el_.innerText);
-    const currentStyle = this.getStyleForTime(time)
+    const currentStyle = Object.assign({}, this.getStyleForTime(time))
 
     if (!currentStyle) {
       return this.hideThumbnailHolder()
     }
 
+    // check if mobile
+    if (this.options.mobile && this.player.el_.offsetWidth < this.options.mobile.size) {
+      currentStyle.width = this.options.mobile.width + 'px'
+      currentStyle.height = this.options.mobile.height + 'px'
+    }
+
+    // check if fullscreen
+    if (this.player.isFullscreen() && this.options.fullscreen && this.player.el_.offsetWidth >= this.options.fullscreen.size) {
+      currentStyle.width = this.options.fullscreen.width + 'px'
+      currentStyle.height = this.options.fullscreen.height + 'px'
+    }
+
     // set time
     this.time.innerHTML = this.player.controlBar.progressControl.seekBar.mouseTimeDisplay.el_.innerText;
 
-    const xPos = ((1 - ((width - x) / width))) * width
+    let xPos = Math.round(((1 - ((width - x) / width))) * width)
 
     this.thumbnailHolder.style.position = 'absolute'
+
+    let xMarginPos = (parseInt(currentStyle.width) / 2)
+    // check if thumbnail is at beginning of progress bar
+    if (xMarginPos > (xPos - 5)) {
+      xMarginPos = xPos - 5
+      if (xPos < 5) {
+        xMarginPos = 0
+        xPos = 5
+      }
+    }
+    // check if thumbnail is at end of progress bar
+    if ((width - xPos - 5) < xMarginPos) {
+      xMarginPos = parseInt(currentStyle.width) - (width - xPos - 5)
+    }
+
     this.thumbnailHolder.style.left = xPos + 'px'
-    this.thumbnailHolder.style.marginLeft = '-' + (parseInt(currentStyle.width) / 2) + 'px'
+    this.thumbnailHolder.style.marginLeft = '-' + xMarginPos + 'px'
 
     if (this.lastStyle && this.lastStyle === currentStyle) {
       return

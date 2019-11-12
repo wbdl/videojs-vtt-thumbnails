@@ -4,4 +4,4 @@
  * @copyright 2019 Chris Boustead <chris@forgemotion.com>
  * @license MIT
  */
-.video-js.vjs-vtt-thumbnails{display:block}.video-js .vjs-vtt-thumbnail-display{position:absolute;transition:transform .01s, opacity .2s;bottom:155%;pointer-events:none;box-shadow:0 0 7px rgba(0,0,0,0.6)}.video-js .vjs-vtt-thumbnail-display .vjs-thumbnail-time{bottom:-16px;color:#333;font-size:1.1em;width:100%;background:rgba(255,255,255,0.7);padding:3px 0px;position:absolute;z-index:9999}.video-js .vjs-vtt-thumbnail-display .vjs-thumbnail-arrow{bottom:-21px;position:absolute;opacity:0.7;width:10px;margin-left:55px;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #fff}
+.video-js.vjs-vtt-thumbnails{display:block}.video-js .vjs-vtt-thumbnail-display{position:absolute;transition:transform .01s, opacity .2s;bottom:155%;pointer-events:none;box-shadow:0 0 7px rgba(0,0,0,0.6)}.video-js .vjs-vtt-thumbnail-display .vjs-thumbnail-time{bottom:-16px;color:#333;font-size:1.1em;width:100%;background:rgba(255,255,255,0.7);padding:3px 0px;position:absolute;z-index:9999}
